@@ -1,0 +1,76 @@
+<!-- about.html-->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	    <title>{% block title %}{% endblock %}</title>
+	    <!-- Bootstrap core CSS -->
+	    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	    <!-- Custom styles for this template -->
+	    <link href="https://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+	    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+		
+	</head>
+	<body>
+	<div class="container">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation"><a href="/">Home</a></li>
+            <li role="presentation"><a href="/about">About</a></li>
+            <li role="presentation"><a href="http://flask.pocoo.org" target="_blank">More About Flask</a></li>
+          </ul>
+        </nav>
+    </div>
+	<div class="jumbotron">
+	  <h1>DATA UPLOAD</h1>
+	  <h3>Please upload all independent class folder specified previously containing class data</h3>
+	  {% for value in form_data %}
+		<p> {{value}}</p>
+		<p>
+			<p id="para_{{value}}"><p>
+	        <input type="file" id="multiFiles_{{value}}" multiple="" name="file[]" class="span3"/><br />
+	        <button id={{value}} onclick="Upload('{{value}}')">Upload</button>
+	  	</p>
+	  {% endfor %}
+	</div>
+	<script type="text/javascript">
+			function Upload(class_name) {
+				var form_data = new FormData();
+				var ins = document.getElementById('multiFiles_'+class_name).files.length;
+				
+				if(ins == 0) {
+					$('#para_'+class_name).html('<span style="color:red">Select at least one file</span>');
+					return;
+				}
+				
+				for (var x = 0; x < ins; x++) {
+					form_data.append("files[]", document.getElementById('multiFiles_'+class_name).files[x]);
+				}
+				form_data.append("className",class_name);
+				
+				$.ajax({
+					url: '/upload', // point to server-side URL
+					dataType: 'json', // what to expect back from server
+					cache: false,
+					contentType: false,
+					processData: false,
+					data: form_data,
+					type: 'post',
+					success: function (response) { // display success response
+						$('#msg').html('');
+						$.each(response, function (key, data) {							
+							if(key !== 'message') {
+								$('#para_'+class_name).append(key + ' -> ' + data + '<br/>');
+							} else {
+								$('#para_'+class_name).append(data + '<br/>');
+							}
+						})
+					},
+					error: function (response) {
+						$('#para_'+class_name).html(response.message); // display error response
+					}
+				});		
+			}
+		</script>
+	</body>
+</html>

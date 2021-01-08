@@ -1,0 +1,18 @@
+<!-- index.html-->
+
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<div class="jumbotron">
+  <h1>Annotator</h1>
+  <p class="lead">This is project to create a prediction model when you specify class!</p>
+</br>
+</br>
+  <form action="/data" method = "POST">
+    <p>Enter your unique username <input type = "text" name = "UserName" pattern = "[A-Za-z]+"/></p>
+    <p>Number of Classes<input type = "number" name = "NumClasses"/></p>
+    <p>Class Names <input type = "text" name = "ClassNames" /></p>
+    <p><input type = "submit" value = "Submit" /></p>
+</form>
+</div>
+{% endblock %}
