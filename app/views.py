@@ -88,8 +88,8 @@ def upload_file(file_name, bucket, class_name, object_name=None,):
     :return: True if file was uploaded, else False
     """
     session = boto3.Session(
-        aws_access_key_id='AKIAIP42E264TKZSBUDA',
-        aws_secret_access_key='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',
+        aws_access_key_id='access_key',
+        aws_secret_access_key='secret_key',
         region_name='ap-south-1'
     )
     s3 = session.resource('s3')
